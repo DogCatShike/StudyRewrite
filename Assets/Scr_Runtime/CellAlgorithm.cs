@@ -26,6 +26,7 @@ namespace Rewrite {
             } while (failedTimes > 0);
         }
 
+        #region 规则替换
         // 01 => 11
         public static void WB_to_WW_Loop_Once(int[] cells, int width, int height, int[] fromValue, int[] toValue) {
             bool isSucc = false;
@@ -74,5 +75,12 @@ namespace Rewrite {
                 }
             }
         }
+
+        public static void WB_to_WW_Loop_ToEnd(int[] cells, int width, int height, int[] fromValue, int[] toValue, int count) {
+            for (int i = 0; i < count; i++) {
+                WB_to_WW_Loop_Once(cells, width, height, fromValue, toValue);
+            }
+        }
+        #endregion
     }
 }

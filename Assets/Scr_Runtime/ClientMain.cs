@@ -25,6 +25,8 @@ namespace Rewrite {
 
             CellAlgorithm.Fill(cells, 0);
             CellAlgorithm.Replace_OneCell(rd, cells, 0, 1);
+
+            // CellAlgorithm.WB_to_WW_Loop_ToEnd(cells, width, height, new int[] { 1, 0 }, new int[] { 1, 1 }, 10);
         }
 
         void Update() {
