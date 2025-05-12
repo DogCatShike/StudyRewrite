@@ -27,6 +27,12 @@ namespace Rewrite {
             CellAlgorithm.Replace_OneCell(rd, cells, 0, 1);
         }
 
+        void Update() {
+            if (Input.GetKeyDown(KeyCode.Space)) {
+                CellAlgorithm.WB_to_WW_Loop_Once(cells, width, height, new int[] { 1, 0 }, new int[] { 1, 1 });
+            }
+        }
+
         void OnDrawGizmos() {
             if (cells == null) return;
 
