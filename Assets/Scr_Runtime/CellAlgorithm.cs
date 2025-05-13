@@ -141,7 +141,7 @@ namespace Rewrite {
             } while (failedTimes > 0);
         }
 
-        public static void River_Loop_Once(int[] cells, int width, int height, ref int check) {
+        public static void River_Loop_Once(RD random, int[] cells, int width, int height, ref int riverCheck, ref int riverDirCheck) {
             bool isSucc = false;
 
             Span<int> directions = stackalloc int[4] {
@@ -151,18 +151,19 @@ namespace Rewrite {
                 -1,     // left
             };
 
-            for (int currentIndex = 0; currentIndex < cells.Length; currentIndex++) {
+            int randomIndex = random.Next(cells.Length);
+            for (int currentIndex = randomIndex; currentIndex < cells.Length; currentIndex++) {
                 int currentValue = cells[currentIndex];
 
-                if (check == 0) {
+                if (riverCheck == 0) {
                     if (currentValue != 2 && currentValue != 3) {
                         continue;
                     }
-                } else if (check == 2) {
+                } else if (riverCheck == 2) {
                     if (currentValue != 3) {
                         continue;
                     }
-                } else if (check == 3) {
+                } else if (riverCheck == 3) {
                     if (currentValue != 2) {
                         continue;
                     }
@@ -170,6 +171,37 @@ namespace Rewrite {
 
                 int nextIndex;
                 int nextValue;
+
+                if (riverDirCheck != 0) {
+                    for (int i = riverDirCheck; i < directions.Length; i++) {
+                        nextIndex = currentIndex + directions[i];
+
+                        if (nextIndex < 0 || nextIndex >= cells.Length) { // Up and Down
+                            continue;
+                        }
+                        if (i == 1 || i == 3) { // Left and Right
+                            if (nextIndex / width != currentIndex / width) {
+                                continue;
+                            }
+                        }
+
+                        nextValue = cells[nextIndex];
+                        if (nextValue != 0) {
+                            continue;
+                        }
+
+                        if (currentValue == 2) {
+                            cells[nextIndex] = 2;
+                            riverCheck = 2;
+                        } else if (currentValue == 3) {
+                            cells[nextIndex] = 3;
+                            riverCheck = 3;
+                        }
+                        isSucc = true;
+                        riverDirCheck = i;
+                        break;
+                    }
+                }
 
                 for (int i = 0; i < directions.Length; i++) {
                     nextIndex = currentIndex + directions[i];
@@ -190,12 +222,13 @@ namespace Rewrite {
 
                     if (currentValue == 2) {
                         cells[nextIndex] = 2;
-                        check = 2;
+                        riverCheck = 2;
                     } else if (currentValue == 3) {
                         cells[nextIndex] = 3;
-                        check = 3;
+                        riverCheck = 3;
                     }
                     isSucc = true;
+                    riverDirCheck = random.Next(0, 4);
                     break;
                 }
 
@@ -205,9 +238,9 @@ namespace Rewrite {
             }
         }
 
-        public static void River_Loop_ToEnd(int[] cells, int width, int height, int check, int count) {
+        public static void River_Loop_ToEnd(RD random, int[] cells, int width, int height, int check, int riverDirCheck, int count) {
             for (int i = 0; i < count; i++) {
-                River_Loop_Once(cells, width, height, ref check);
+                River_Loop_Once(random, cells, width, height, ref check, ref riverDirCheck);
             }
         }
         #endregion

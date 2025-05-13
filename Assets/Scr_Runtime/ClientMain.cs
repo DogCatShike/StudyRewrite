@@ -16,6 +16,7 @@ namespace Rewrite {
         public Direction lineDir;
 
         int riverCheck;
+        int riverDirCheck;
 
         Dictionary<int, Color> colors = new Dictionary<int, Color>() {
             { 0, Color.black },
@@ -33,7 +34,7 @@ namespace Rewrite {
 
             // StudyStart();
             RiverStart();
-            CellAlgorithm.River_Loop_ToEnd(cells, width, height, riverCheck, 200);
+            CellAlgorithm.River_Loop_ToEnd(rd, cells, width, height, riverCheck, riverDirCheck, 200);
         }
 
         void Update() {
@@ -99,7 +100,7 @@ namespace Rewrite {
             }
 
             if (Input.GetKeyDown(KeyCode.Space)) {
-                CellAlgorithm.River_Loop_Once(cells, width, height, ref riverCheck);
+                CellAlgorithm.River_Loop_Once(rd, cells, width, height, ref riverCheck, ref riverDirCheck);
             }
         }
         #endregion
