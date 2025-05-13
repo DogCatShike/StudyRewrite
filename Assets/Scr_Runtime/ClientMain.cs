@@ -15,41 +15,30 @@ namespace Rewrite {
         int fromIndex;
         public Direction lineDir;
 
+        int riverCheck;
+
         Dictionary<int, Color> colors = new Dictionary<int, Color>() {
             { 0, Color.black },
             { 1, Color.white },
-            { 2, Color.blue },
-            { 3, Color.green },
+            { 2, Color.red },
+            { 3, Color.yellow },
+            { 4, Color.blue },
+            { 5, Color.green },
         };
 
         void Start() {
             rd = new RD(seed);
             cells = new int[width * height];
-
             CellAlgorithm.Fill(cells, 0);
-            CellAlgorithm.Replace_OneCell(rd, cells, 0, 1);
 
-            // CellAlgorithm.WB_to_WW_Loop_ToEnd(cells, width, height, new int[] { 1, 0 }, new int[] { 1, 1 }, 10);
-
-            fromIndex = rd.Next(0, cells.Length);
-            // int dir = CellFunctions.GetDir(lineDir);
-            // CellAlgorithm.Line_Loop_ToEnd(cells, width, height, fromIndex, dir, 2, 10);
+            // StudyStart();
+            RiverStart();
+            CellAlgorithm.River_Loop_ToEnd(cells, width, height, riverCheck, 200);
         }
 
         void Update() {
-            if (Input.GetKeyDown(KeyCode.R)) {
-                CellAlgorithm.Fill(cells, 0);
-                CellAlgorithm.Replace_OneCell(rd, cells, 0, 1);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Space)) {
-                CellAlgorithm.WB_to_WW_Loop_Once(cells, width, height, new int[] { 1, 0 }, new int[] { 1, 1 });
-            }
-
-            if (Input.GetKeyDown(KeyCode.L)) {
-                int dir = CellFunctions.GetDir(lineDir);
-                CellAlgorithm.Line_Loop_Once(cells, width, height, ref fromIndex, dir, 2);
-            }
+            // StudyUpdate();
+            RiverUpdate();
         }
 
         void OnDrawGizmos() {
@@ -68,7 +57,51 @@ namespace Rewrite {
                 Vector3 size = new Vector3(1, 1, 0);
                 Gizmos.DrawCube(new Vector3(x, y, 0), size);
             }
-
         }
+
+        #region 基础学习
+        void StudyStart() {
+            CellAlgorithm.Replace_OneCell(rd, cells, 0, 1);
+
+            // CellAlgorithm.WB_to_WW_Loop_ToEnd(cells, width, height, new int[] { 1, 0 }, new int[] { 1, 1 }, 10);
+
+            fromIndex = rd.Next(0, cells.Length);
+            // int dir = CellFunctions.GetDir(lineDir);
+            // CellAlgorithm.Line_Loop_ToEnd(cells, width, height, fromIndex, dir, 2, 10);
+        }
+
+        void StudyUpdate() {
+            if (Input.GetKeyDown(KeyCode.R)) {
+                CellAlgorithm.Fill(cells, 0);
+                CellAlgorithm.Replace_OneCell(rd, cells, 0, 1);
+            }
+
+            if (Input.GetKeyDown(KeyCode.Space)) {
+                CellAlgorithm.WB_to_WW_Loop_Once(cells, width, height, new int[] { 1, 0 }, new int[] { 1, 1 });
+            }
+
+            if (Input.GetKeyDown(KeyCode.L)) {
+                int dir = CellFunctions.GetDir(lineDir);
+                CellAlgorithm.Line_Loop_Once(cells, width, height, ref fromIndex, dir, 2);
+            }
+        }
+        #endregion
+
+        #region River
+        void RiverStart() {
+            CellAlgorithm.Replace_TwoCell(rd, cells, 0, 2, 3);
+        }
+
+        void RiverUpdate() {
+            if (Input.GetKeyDown(KeyCode.R)) {
+                CellAlgorithm.Fill(cells, 0);
+                CellAlgorithm.Replace_TwoCell(rd, cells, 0, 2, 3);
+            }
+
+            if (Input.GetKeyDown(KeyCode.Space)) {
+                CellAlgorithm.River_Loop_Once(cells, width, height, ref riverCheck);
+            }
+        }
+        #endregion
     }
 }
