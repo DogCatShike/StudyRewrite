@@ -106,6 +106,12 @@ namespace Rewrite {
             cells[nextIndex] = toValue;
             fromIndex = nextIndex;
         }
+
+        public static void Line_Loop_ToEnd(int[] cells, int width, int height, int fromIndex, int dir, int toValue, int count) {
+            for (int i = 0; i < count; i++) {
+                Line_Loop_Once(cells, width, height, ref fromIndex, dir, toValue);
+            }
+        }
         #endregion
     }
 }

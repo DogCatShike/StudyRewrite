@@ -32,6 +32,8 @@ namespace Rewrite {
             // CellAlgorithm.WB_to_WW_Loop_ToEnd(cells, width, height, new int[] { 1, 0 }, new int[] { 1, 1 }, 10);
 
             fromIndex = rd.Next(0, cells.Length);
+            // int dir = CellFunctions.GetDir(lineDir);
+            // CellAlgorithm.Line_Loop_ToEnd(cells, width, height, fromIndex, dir, 2, 10);
         }
 
         void Update() {
