@@ -141,6 +141,7 @@ namespace Rewrite {
             } while (failedTimes > 0);
         }
 
+        // Bug: 有可能找不到可执行的点
         public static void River_Loop_Once(RD random, int[] cells, int width, int height, ref int riverCheck, ref int riverDirCheck) {
             bool isSucc = false;
 

@@ -34,7 +34,7 @@ namespace Rewrite {
 
             // StudyStart();
             RiverStart();
-            CellAlgorithm.River_Loop_ToEnd(rd, cells, width, height, riverCheck, riverDirCheck, 200);
+            CellAlgorithm.River_Loop_ToEnd(rd, cells, width, height, riverCheck, riverDirCheck, 5000);
         }
 
         void Update() {
