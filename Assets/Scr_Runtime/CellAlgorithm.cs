@@ -32,10 +32,10 @@ namespace Rewrite {
             bool isSucc = false;
 
             Span<int> directions = stackalloc int[4] { // stackalloc: 在栈上分配内存，不会产生GC
-                -width, // down
                 width,  // up
-                -1,     // left
                 1,      // right
+                -width, // down
+                -1,     // left
             };
 
             for (int currentIndex = 0; currentIndex < cells.Length; currentIndex++) {
@@ -53,7 +53,7 @@ namespace Rewrite {
                     if (nextIndex < 0 || nextIndex >= cells.Length) { // Up and Down
                         continue;
                     }
-                    if (i == 2 || i == 3) { // Left and Right
+                    if (i == 1 || i == 3) { // Left and Right
                         if (nextIndex / width != currentIndex / width) {
                             continue;
                         }
@@ -80,6 +80,31 @@ namespace Rewrite {
             for (int i = 0; i < count; i++) {
                 WB_to_WW_Loop_Once(cells, width, height, fromValue, toValue);
             }
+        }
+        #endregion
+
+        #region 直线
+        public static void Line_Loop_Once(int[] cells, int width, int height, ref int fromIndex, int dir, int toValue) {
+            Span<int> directions = stackalloc int[4] {
+                width,  // up
+                1,      // right
+                -width, // down
+                -1,     // left
+            };
+
+            int nextIndex = fromIndex + directions[dir];
+
+            if (nextIndex < 0 || nextIndex >= cells.Length) { // Up and Down
+                return;
+            }
+            if (dir == 1 || dir == 3) { // Left and Right
+                if (nextIndex / width != fromIndex / width) {
+                    return;
+                }
+            }
+
+            cells[nextIndex] = toValue;
+            fromIndex = nextIndex;
         }
         #endregion
     }

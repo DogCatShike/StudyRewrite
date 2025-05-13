@@ -12,6 +12,9 @@ namespace Rewrite {
         int[] cells;
         RD rd;
 
+        int fromIndex;
+        public Direction lineDir;
+
         Dictionary<int, Color> colors = new Dictionary<int, Color>() {
             { 0, Color.black },
             { 1, Color.white },
@@ -27,11 +30,23 @@ namespace Rewrite {
             CellAlgorithm.Replace_OneCell(rd, cells, 0, 1);
 
             // CellAlgorithm.WB_to_WW_Loop_ToEnd(cells, width, height, new int[] { 1, 0 }, new int[] { 1, 1 }, 10);
+
+            fromIndex = rd.Next(0, cells.Length);
         }
 
         void Update() {
+            if (Input.GetKeyDown(KeyCode.R)) {
+                CellAlgorithm.Fill(cells, 0);
+                CellAlgorithm.Replace_OneCell(rd, cells, 0, 1);
+            }
+
             if (Input.GetKeyDown(KeyCode.Space)) {
                 CellAlgorithm.WB_to_WW_Loop_Once(cells, width, height, new int[] { 1, 0 }, new int[] { 1, 1 });
+            }
+
+            if (Input.GetKeyDown(KeyCode.L)) {
+                int dir = CellFunctions.GetDir(lineDir);
+                CellAlgorithm.Line_Loop_Once(cells, width, height, ref fromIndex, dir, 2);
             }
         }
 
